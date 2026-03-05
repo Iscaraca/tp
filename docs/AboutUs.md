@@ -19,22 +19,22 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 * Role: Project Advisor
 
-### Jane Doe
-
-<img src="images/johndoe.png" width="200px">
-
-[[github](http://github.com/johndoe)]
-[[portfolio](team/johndoe.md)]
-
-* Role: Team Lead
-* Responsibilities: UI
-
 ### Isaac Chen
 
 <img src="images/iscaraca.png" width="200px">
 
 [[homepage](https://Iscaraca.github.io)]
 [[github](https://github.com/Iscaraca)]
+
+* Role: Team Lead
+* Responsibilities: Testing + Github workflow integration
+
+### Harikrishnan
+
+<img src="images/harikrishn4a.png" width="200px">
+
+[[github](https://github.com/harikrishnannandakumar)]
+[[portfolio](team/harikrishnan.md)]
 
 * Role: Developer
 * Responsibilities: Testing + Documentation
