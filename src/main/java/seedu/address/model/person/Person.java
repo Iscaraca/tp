@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import main.java.seedu.address.model.person.Alias;
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Tag;
 
@@ -20,7 +21,7 @@ public class Person {
     private final Name name;
     private final Phone phone;
     private final Email email;
-    private final String alias;
+    private final Alias alias;
 
     // Data fields
     private final Address address;
@@ -32,15 +33,19 @@ public class Person {
     public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = name;
+        this.alias = new Alias(name.toString());
         this.phone = phone;
         this.email = email;
         this.address = address;
         this.tags.addAll(tags);
-        this.alias = name.toString();
     }
 
     public Name getName() {
         return name;
+    }
+
+    public Alias getAlias() {
+        return alias;
     }
 
     public Phone getPhone() {
