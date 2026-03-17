@@ -55,14 +55,18 @@ public class ViewPanel extends UiPart<Region> {
         profileBox.setManaged(true);
 
         nameLabel.setText(person.getName().fullName);
+        stageLabel.setText(person.getStage().toString());
 
         tagsPane.getChildren().clear();
         person.getTags().stream()
                 .sorted(Comparator.comparing(tag -> tag.tagName))
-                .forEach(tag -> tagsPane.getChildren().add(new Label(tag.tagName)));
+                .forEach(tag -> {
+                    Label tagLabel = new Label(tag.tagName);
+                    tagLabel.getStyleClass().add("tag-label");
+                    tagsPane.getChildren().add(tagLabel);
+                });
 
         aliasLabel.setText(person.getAlias().toString());
-        stageLabel.setText(person.getStage().toString());
         phoneLabel.setText(person.getPhone().value);
         emailLabel.setText(person.getEmail().value);
         addressLabel.setText(person.getAddress().value);
