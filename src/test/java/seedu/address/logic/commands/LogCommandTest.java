@@ -71,7 +71,7 @@ public class LogCommandTest {
     }
 
     @Test
-    public void execute_validIndexUnfilteredList_withOutcome_success() {
+    public void execute_withOutcome_success() {
         Person personToLog = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         LogCommand logCommand = new LogCommand(INDEX_FIRST_PERSON, ENCOUNTER_WITH_OUTCOME);
 

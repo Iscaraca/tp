@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
 import seedu.address.commons.util.ToStringBuilder;
 import seedu.address.model.tag.Tag;
 
@@ -30,17 +31,10 @@ public class Person {
     private final List<Encounter> encounters = new ArrayList<>();
 
     /**
-     * Full constructor — every field must be present and not null.
+     * Full constructor - every field must be present and not null.
      */
-    public Person(
-        Name name,
-        Phone phone,
-        Email email,
-        Address address,
-        Stage stage,
-        Set<Tag> tags,
-        List<Encounter> encounters
-    ) {
+    public Person(Name name, Phone phone, Email email, Address address, Stage stage,
+                  Set<Tag> tags, List<Encounter> encounters) {
         requireAllNonNull(name, phone, email, address, stage, tags, encounters);
         this.name = name;
         this.alias = new Alias(name.toString());
@@ -56,14 +50,7 @@ public class Person {
      * Convenience constructor with no encounters (defaults to empty list).
      * Every field must be present and not null.
      */
-    public Person(
-        Name name,
-        Phone phone,
-        Email email,
-        Address address,
-        Stage stage,
-        Set<Tag> tags
-    ) {
+    public Person(Name name, Phone phone, Email email, Address address, Stage stage, Set<Tag> tags) {
         this(name, phone, email, address, stage, tags, Collections.emptyList());
     }
 
@@ -116,7 +103,8 @@ public class Person {
             return true;
         }
 
-        return otherPerson != null && otherPerson.getName().equals(getName());
+        return otherPerson != null
+                && otherPerson.getName().equals(getName());
     }
 
     /**
@@ -135,41 +123,32 @@ public class Person {
         }
 
         Person otherPerson = (Person) other;
-        return (
-            name.equals(otherPerson.name) &&
-            phone.equals(otherPerson.phone) &&
-            email.equals(otherPerson.email) &&
-            address.equals(otherPerson.address) &&
-            stage.equals(otherPerson.stage) &&
-            tags.equals(otherPerson.tags) &&
-            encounters.equals(otherPerson.encounters)
-        );
+        return name.equals(otherPerson.name)
+                && phone.equals(otherPerson.phone)
+                && email.equals(otherPerson.email)
+                && address.equals(otherPerson.address)
+                && stage.equals(otherPerson.stage)
+                && tags.equals(otherPerson.tags)
+                && encounters.equals(otherPerson.encounters);
     }
 
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(
-            name,
-            phone,
-            email,
-            address,
-            stage,
-            tags,
-            encounters
-        );
+        return Objects.hash(name, phone, email, address, stage, tags, encounters);
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-            .add("name", name)
-            .add("phone", phone)
-            .add("email", email)
-            .add("address", address)
-            .add("stage", stage)
-            .add("tags", tags)
-            .add("encounters", encounters)
-            .toString();
+                .add("name", name)
+                .add("phone", phone)
+                .add("email", email)
+                .add("address", address)
+                .add("stage", stage)
+                .add("tags", tags)
+                .add("encounters", encounters)
+                .toString();
     }
+
 }

@@ -10,6 +10,7 @@ import java.time.format.ResolverStyle;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -25,8 +26,7 @@ import seedu.address.model.tag.Tag;
  */
 public class ParserUtil {
 
-    public static final String MESSAGE_INVALID_INDEX =
-        "Index is not a non-zero unsigned integer.";
+    public static final String MESSAGE_INVALID_INDEX = "Index is not a non-zero unsigned integer.";
 
     /**
      * Parses {@code oneBasedIndex} into an {@code Index} and returns it. Leading and trailing whitespaces will be
@@ -119,8 +119,7 @@ public class ParserUtil {
     /**
      * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
      */
-    public static Set<Tag> parseTags(Collection<String> tags)
-        throws ParseException {
+    public static Set<Tag> parseTags(Collection<String> tags) throws ParseException {
         requireNonNull(tags);
         final Set<Tag> tagSet = new HashSet<>();
         for (String tagName : tags) {
@@ -139,12 +138,8 @@ public class ParserUtil {
         requireNonNull(date);
         String trimmed = date.trim();
         try {
-            return LocalDate.parse(
-                trimmed,
-                DateTimeFormatter.ofPattern("uuuu-MM-dd").withResolverStyle(
-                    ResolverStyle.STRICT
-                )
-            );
+            return LocalDate.parse(trimmed,
+                    DateTimeFormatter.ofPattern("uuuu-MM-dd").withResolverStyle(ResolverStyle.STRICT));
         } catch (DateTimeParseException e) {
             throw new ParseException("Invalid date. Use format YYYY-MM-DD.");
         }
@@ -160,10 +155,7 @@ public class ParserUtil {
         requireNonNull(time);
         String trimmed = time.trim();
         try {
-            return LocalTime.parse(
-                trimmed,
-                DateTimeFormatter.ofPattern("HH:mm")
-            );
+            return LocalTime.parse(trimmed, DateTimeFormatter.ofPattern("HH:mm"));
         } catch (DateTimeParseException e) {
             throw new ParseException("Invalid time. Use 24-hour format HH:mm.");
         }
@@ -185,13 +177,12 @@ public class ParserUtil {
     }
 
     /**
-     * Parses and validates an encounter {@code String description} (1–500 characters).
+     * Parses and validates an encounter {@code String description} (1-500 characters).
      * Leading and trailing whitespaces will be trimmed.
      *
      * @throws ParseException if the given {@code description} is blank or exceeds 500 characters.
      */
-    public static String parseEncounterDescription(String description)
-        throws ParseException {
+    public static String parseEncounterDescription(String description) throws ParseException {
         requireNonNull(description);
         String trimmed = description.trim();
         if (!Encounter.isValidDescription(trimmed)) {

@@ -7,6 +7,7 @@ import static seedu.address.testutil.Assert.assertThrows;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 
 public class EncounterTest {
@@ -352,7 +353,7 @@ public class EncounterTest {
     }
 
     @Test
-    public void hashCode_withOutcome_sameValues_sameHashCode() {
+    public void hashCode_withOutcome_sameHashCode() {
         Encounter e1 = new Encounter(
             VALID_DATE_TIME,
             VALID_LOCATION,
@@ -378,15 +379,9 @@ public class EncounterTest {
             VALID_DESCRIPTION,
             NO_OUTCOME
         );
-        String expected =
-            Encounter.class.getCanonicalName() +
-            "{dateTime=" +
-            encounter.getFormattedDateTime() +
-            ", location=" +
-            VALID_LOCATION +
-            ", description=" +
-            VALID_DESCRIPTION +
-            ", outcome=}";
+        String expected = Encounter.class.getCanonicalName() + "{dateTime="
+                + encounter.getFormattedDateTime() + ", location=" + VALID_LOCATION
+                + ", description=" + VALID_DESCRIPTION + ", outcome=}";
         assertEquals(expected, encounter.toString());
     }
 
@@ -398,17 +393,10 @@ public class EncounterTest {
             VALID_DESCRIPTION,
             VALID_OUTCOME
         );
-        String expected =
-            Encounter.class.getCanonicalName() +
-            "{dateTime=" +
-            encounter.getFormattedDateTime() +
-            ", location=" +
-            VALID_LOCATION +
-            ", description=" +
-            VALID_DESCRIPTION +
-            ", outcome=" +
-            VALID_OUTCOME.get() +
-            "}";
+        String expected = Encounter.class.getCanonicalName() + "{dateTime="
+                + encounter.getFormattedDateTime() + ", location=" + VALID_LOCATION
+                + ", description=" + VALID_DESCRIPTION
+                + ", outcome=" + VALID_OUTCOME.get() + "}";
         assertEquals(expected, encounter.toString());
     }
 }
