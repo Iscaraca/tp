@@ -49,6 +49,9 @@ public class EditPersonDescriptorBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Risk} of the {@code EditPersonDescriptor} that we are building.
+     */
     public EditPersonDescriptorBuilder withRisk(String risk) {
         descriptor.setRisk(Risk.fromString(risk));
         return this;

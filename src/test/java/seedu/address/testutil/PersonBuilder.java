@@ -8,7 +8,6 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Notes;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Risk;
-import seedu.address.model.util.SampleDataUtil;
 
 /**
  * A utility class to help with building Person objects.
@@ -57,6 +56,9 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Risk} of the {@code Person} that we are building.
+     */
     public PersonBuilder withRisk(String risk) {
         this.risk = seedu.address.model.person.Risk.fromString(risk);
         return this;
@@ -88,6 +90,9 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Notes} of the {@code Person} that we are building.
+     */
     public PersonBuilder withNotes(String notes) {
         this.notes = new Notes(notes);
         return this;

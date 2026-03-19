@@ -26,6 +26,9 @@ public class Notes {
         value = notes;
     }
 
+    /**
+     * Returns true if a given string is valid notes.
+     */
     public static boolean isValidNotes(String test) {
         requireNonNull(test);
         return test.length() <= MAX_LENGTH && !test.contains("\n") && !test.contains("\r");
