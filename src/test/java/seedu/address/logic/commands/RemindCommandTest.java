@@ -81,6 +81,35 @@ public class RemindCommandTest {
     }
 
     @Test
+    public void execute_validIndexUnfilteredList_passwordPreserved() {
+        Person original = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person passwordProtected = new PersonBuilder(original).withPassword("hunter2").build();
+        model.setPerson(original, passwordProtected);
+
+        RemindCommand remindCommand = new RemindCommand(INDEX_FIRST_PERSON, REMINDER_LATER);
+
+        Person expectedUpdated = new Person(
+                passwordProtected.getName(),
+                passwordProtected.getPhone(),
+                passwordProtected.getEmail(),
+                passwordProtected.getAddress(),
+                passwordProtected.getStage(),
+                passwordProtected.getAliases(),
+                passwordProtected.getNotes(),
+                passwordProtected.getRisk(),
+                passwordProtected.getTags(),
+                passwordProtected.getEncounters(),
+                java.util.List.of(REMINDER_LATER),
+                passwordProtected.getPassword());
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.setPerson(passwordProtected, expectedUpdated);
+
+        String expectedMessage = String.format(RemindCommand.MESSAGE_SUCCESS,
+                passwordProtected.getName(), REMINDER_LATER.getDate(), REMINDER_LATER.getTime());
+        assertCommandSuccess(remindCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
     public void execute_invalidIndexUnfilteredList_throwsCommandException() {
         Index outOfBound = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
         RemindCommand remindCommand = new RemindCommand(outOfBound, REMINDER_LATER);

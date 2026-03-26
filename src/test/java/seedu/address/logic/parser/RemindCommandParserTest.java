@@ -13,6 +13,7 @@ import java.time.LocalTime;
 
 import org.junit.jupiter.api.Test;
 
+import seedu.address.logic.Messages;
 import seedu.address.logic.commands.RemindCommand;
 import seedu.address.model.person.Reminder;
 
@@ -80,5 +81,23 @@ public class RemindCommandParserTest {
     public void parse_blankNote_failure() {
         assertParseFailure(parser, VALID_INDEX + DATE_DESC + TIME_DESC + INVALID_NOTE_DESC,
                 Reminder.MESSAGE_NOTE_CONSTRAINTS);
+    }
+
+    @Test
+    public void parse_duplicateDatePrefix_failure() {
+        assertParseFailure(parser, VALID_INDEX + DATE_DESC + DATE_DESC + TIME_DESC + NOTE_DESC,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_DATE));
+    }
+
+    @Test
+    public void parse_duplicateTimePrefix_failure() {
+        assertParseFailure(parser, VALID_INDEX + DATE_DESC + TIME_DESC + TIME_DESC + NOTE_DESC,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TIME));
+    }
+
+    @Test
+    public void parse_duplicateNotePrefix_failure() {
+        assertParseFailure(parser, VALID_INDEX + DATE_DESC + TIME_DESC + NOTE_DESC + NOTE_DESC,
+                Messages.getErrorMessageForDuplicatePrefixes(PREFIX_NOTES));
     }
 }
