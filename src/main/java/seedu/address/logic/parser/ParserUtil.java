@@ -22,7 +22,9 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Encounter;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Notes;
+import seedu.address.model.person.Password;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.Reminder;
 import seedu.address.model.person.Risk;
 import seedu.address.model.person.Stage;
 import seedu.address.model.tag.Tag;
@@ -220,6 +222,21 @@ public class ParserUtil {
     }
 
     /**
+     * Parses a {@code String password} into a {@code Password}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code password} is invalid.
+     */
+    public static Password parsePassword(String password) throws ParseException {
+        requireNonNull(password);
+        String trimmedPassword = password.trim();
+        if (!Password.isValidPassword(trimmedPassword)) {
+            throw new ParseException(Password.MESSAGE_CONSTRAINTS);
+        }
+        return new Password(trimmedPassword);
+    }
+
+    /**
      * Parses a {@code String date} in {@code yyyy-MM-dd} format into a {@code LocalDate}.
      * Leading and trailing whitespaces will be trimmed.
      *
@@ -293,6 +310,20 @@ public class ParserUtil {
         String trimmed = outcome.trim();
         if (!Encounter.isValidOutcome(trimmed)) {
             throw new ParseException(Encounter.MESSAGE_OUTCOME_CONSTRAINTS);
+        }
+        return trimmed;
+    }
+
+    /**
+     * Parses a reminder note and validates that it is non-blank.
+     *
+     * @throws ParseException if the given {@code note} is invalid.
+     */
+    public static String parseReminderNote(String note) throws ParseException {
+        requireNonNull(note);
+        String trimmed = note.trim();
+        if (!Reminder.isValidNote(trimmed)) {
+            throw new ParseException(Reminder.MESSAGE_NOTE_CONSTRAINTS);
         }
         return trimmed;
     }
