@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ALIAS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NOTES;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PASSWORD;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RISK;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_STAGE;
@@ -34,6 +35,7 @@ public class AddCommand extends Command {
             + "[" + PREFIX_ALIAS + "ALIAS(,ALIAS...)] "
             + "[" + PREFIX_NOTES + "NOTES] "
             + "[" + PREFIX_RISK + "RISK] "
+            + "[" + PREFIX_PASSWORD + "PASSWORD] "
             + "[" + PREFIX_TAG + "TAG]...\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_NAME + "John Doe "
@@ -44,6 +46,7 @@ public class AddCommand extends Command {
             + PREFIX_ALIAS + "Ah Boy, Johnny T "
             + PREFIX_NOTES + "Met at cafe. "
             + PREFIX_RISK + "high "
+            + PREFIX_PASSWORD + "hunter2 "
             + PREFIX_TAG + "friends";
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";

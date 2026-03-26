@@ -72,5 +72,5 @@ shadowJar {
 defaultTasks 'clean', 'test'
 
 tasks.named('run') {
-    jvmArgs '-ea'
+    enableAssertions = true
 }

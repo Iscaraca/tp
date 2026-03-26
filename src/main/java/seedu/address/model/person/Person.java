@@ -14,7 +14,8 @@ import seedu.address.model.tag.Tag;
 
 /**
  * Represents a Person in CrimeWatch.
- * Guarantees: details are present and not null, field values are validated, immutable.
+ * Guarantees: details are present and not null, field values are validated,
+ * immutable.
  */
 public class Person {
 
@@ -32,13 +33,14 @@ public class Person {
     private final Set<Tag> tags = new HashSet<>();
     private final List<Encounter> encounters = new ArrayList<>();
     private final List<Reminder> reminders = new ArrayList<>();
+    private final Password password;
 
     /**
      * Full constructor - every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Address address, Stage stage,
-                  List<Alias> aliases, Notes notes, Risk risk, Set<Tag> tags,
-                  List<Encounter> encounters, List<Reminder> reminders) {
+            List<Alias> aliases, Notes notes, Risk risk, Set<Tag> tags,
+            List<Encounter> encounters, List<Reminder> reminders, Password password) {
         requireAllNonNull(name, phone, email, address, stage, aliases, notes, risk, tags, encounters, reminders);
         this.name = name;
         this.phone = phone;
@@ -51,31 +53,52 @@ public class Person {
         this.tags.addAll(tags);
         this.encounters.addAll(encounters);
         this.reminders.addAll(reminders);
-    }
-
-    /**
-     * Convenience constructor without encounters.
-     */
-    public Person(Name name, Phone phone, Email email, Address address, Stage stage,
-                  List<Alias> aliases, Notes notes, Risk risk, Set<Tag> tags) {
-        this(name, phone, email, address, stage, aliases, notes, risk, tags,
-                Collections.emptyList(), Collections.emptyList());
+        this.password = password;
     }
 
     /**
      * Convenience constructor without reminders.
      */
     public Person(Name name, Phone phone, Email email, Address address, Stage stage,
-                  List<Alias> aliases, Notes notes, Risk risk, Set<Tag> tags, List<Encounter> encounters) {
-        this(name, phone, email, address, stage, aliases, notes, risk, tags, encounters, Collections.emptyList());
+            List<Alias> aliases, Notes notes, Risk risk, Set<Tag> tags, List<Encounter> encounters) {
+        this(name, phone, email, address, stage, aliases, notes, risk, tags,
+                encounters, Collections.emptyList(), null);
     }
 
     /**
-     * Convenience constructor with default notes, risk, empty aliases, and no encounters.
+     * Convenience constructor without password.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Stage stage,
+            List<Alias> aliases, Notes notes, Risk risk, Set<Tag> tags,
+            List<Encounter> encounters, List<Reminder> reminders) {
+        this(name, phone, email, address, stage, aliases, notes, risk, tags, encounters, reminders, null);
+    }
+
+    /**
+     * Convenience constructor without reminders.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Stage stage,
+            List<Alias> aliases, Notes notes, Risk risk, Set<Tag> tags, List<Encounter> encounters,
+            Password password) {
+        this(name, phone, email, address, stage, aliases, notes, risk, tags,
+                encounters, Collections.emptyList(), password);
+    }
+
+    /**
+     * Convenience constructor without encounters.
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Stage stage,
+            List<Alias> aliases, Notes notes, Risk risk, Set<Tag> tags) {
+        this(name, phone, email, address, stage, aliases, notes, risk, tags, Collections.emptyList());
+    }
+
+    /**
+     * Convenience constructor with default notes, risk, empty aliases, and no
+     * encounters.
      */
     public Person(Name name, Phone phone, Email email, Address address, Stage stage, Set<Tag> tags) {
         this(name, phone, email, address, stage, List.of(), new Notes(""), Risk.getDefault(), tags,
-                Collections.emptyList(), Collections.emptyList());
+                Collections.emptyList(), Collections.emptyList(), null);
     }
 
     public Name getName() {
@@ -121,7 +144,8 @@ public class Person {
     }
 
     /**
-     * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
+     * Returns an immutable tag set, which throws
+     * {@code UnsupportedOperationException}
      * if modification is attempted.
      */
     public Set<Tag> getTags() {
@@ -129,7 +153,8 @@ public class Person {
     }
 
     /**
-     * Returns an immutable encounter list, which throws {@code UnsupportedOperationException}
+     * Returns an immutable encounter list, which throws
+     * {@code UnsupportedOperationException}
      * if modification is attempted.
      */
     public List<Encounter> getEncounters() {
@@ -142,6 +167,27 @@ public class Person {
      */
     public List<Reminder> getReminders() {
         return Collections.unmodifiableList(reminders);
+    }
+
+    /**
+     * Returns the password of the person.
+     */
+    public Password getPassword() {
+        return password;
+    }
+
+    /**
+     * Returns true if this person has a password configured.
+     */
+    public boolean hasPassword() {
+        return password != null;
+    }
+
+    /**
+     * Returns true if the given raw password matches this person's configured password.
+     */
+    public boolean isPasswordMatch(String rawPassword) {
+        return hasPassword() && password.password.equals(rawPassword);
     }
 
     /**
@@ -183,12 +229,14 @@ public class Person {
                 && risk.equals(otherPerson.risk)
                 && tags.equals(otherPerson.tags)
                 && encounters.equals(otherPerson.encounters)
-                && reminders.equals(otherPerson.reminders);
+                && reminders.equals(otherPerson.reminders)
+                && Objects.equals(password, otherPerson.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, phone, email, address, stage, aliases, notes, risk, tags, encounters, reminders);
+        return Objects.hash(name, phone, email, address, stage, aliases, notes, risk, tags, encounters,
+                reminders, password);
     }
 
     @Override

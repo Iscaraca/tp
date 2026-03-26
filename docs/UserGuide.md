@@ -6,13 +6,32 @@ title: User Guide
 This guide is intended for users who prefer fast, keyboard-driven workflows. You should be comfortable with basic computer operations such as installing software and using a command terminal. No programming experience is required.
 
 ## What is CrimeWatch?
-CrimeWatch is a CLI-based contact tracking tool for managing **person-of-interest profiles** and their **encounter logs**. The MVP supports exactly these five features:
+CrimeWatch is a CLI-based contact tracking tool for managing **person-of-interest profiles** and their **encounter logs**. It supports the following features:
 
 1. Add Contact
-2. Delete Contact
-3. Log Encounter
-4. View Contact
-5. Search Contacts
+2. Edit Contact
+3. Delete Contact
+4. Log Encounter
+5. Edit Encounter
+6. View Contact
+7. Search Contacts
+8. Export encounters (CSV)
+9. Sort Contacts
+
+## Command summary
+
+| Feature | Command format |
+| --- | --- |
+| Add Contact | `add n/NAME a/ALIAS s/STAGE [r/RISK] [note/NOTES]` |
+| Edit Contact | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/STAGE] [al/ALIAS(,ALIAS...)] [note/NOTES] [r/RISK] [t/TAG]...` |
+| Delete Contact | `delete INDEX` |
+| Log Encounter | `log INDEX d/DATE t/TIME l/LOCATION desc/DESCRIPTION [out/OUTCOME]` |
+| Edit Encounter | `editencounter PERSON_INDEX ENCOUNTER_INDEX [d/DATE] [t/TIME] [l/LOCATION] [desc/DESCRIPTION] [out/OUTCOME]` |
+| View Contact | `view INDEX` |
+| Search Contacts | `find KEYWORD [MORE_KEYWORDS]` |
+| Export encounters (CSV) | `export l/LOCATION` |
+| Sort Contacts | `sort CRITERION` |
+
    
 * Table of Contents
 {:toc}
@@ -59,8 +78,9 @@ CrimeWatch is a CLI-based contact tracking tool for managing **person-of-interes
 - Parameters can be in any order unless stated otherwise.
 - Optional parameters are shown in square brackets `[LIKE_THIS]`.
 - **Do not repeat prefixes** in the same command (e.g. `n/... n/...`) — this is treated as an error.
-- Index-based commands (`view`, `log`, `delete`) use the **INDEX shown in the current contact list panel**.
+- Index-based commands (`view`, `log`, `delete`, `edit`) use the **INDEX shown in the current contact list panel**.
   - INDEX must be a positive integer: `1, 2, 3, ...`
+- For `editencounter`, use two indices: `PERSON_INDEX` from contact list and `ENCOUNTER_INDEX` from the viewed encounter cards.
  
 --------------------------------------------------------------------------------------------------------------------
 
@@ -157,7 +177,33 @@ Error message:
 
 --------------------------------------------------------------------------------------------------------------------
 
-### 2) Delete Contact: `delete`
+### 2) Edit Contact: `edit`
+
+Updates details of an existing contact without deleting and re-adding the profile.
+
+**Format**
+`edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/STAGE] [al/ALIAS(,ALIAS...)] [note/NOTES] [r/RISK] [t/TAG]...`
+
+**Parameters**
+- `INDEX` (compulsory): target contact in current list
+- At least one prefixed field must be provided
+- Any omitted field remains unchanged
+
+**Examples**
+- `edit 1 p/91234567 e/johndoe@example.com`
+- `edit 2 r/high note/More cooperative in latest meeting`
+
+**Validation**
+- INDEX must exist in the current list.
+- Provided fields follow the same validation rules as `add`.
+- Repeating non-tag prefixes in the same command is not allowed.
+
+**Success output**
+`Edited Person: [person details]`
+
+--------------------------------------------------------------------------------------------------------------------
+
+### 3) Delete Contact: `delete`
 
 Removes a contact **and all associated encounters** permanently.
 
@@ -176,7 +222,7 @@ Removes a contact **and all associated encounters** permanently.
 
 --------------------------------------------------------------------------------------------------------------------
 
-### 3) Log Encounter: `log`
+### 4) Log Encounter: `log`
 
 Records an interaction with a contact and appends it to the contact’s encounter history.
 
@@ -205,7 +251,38 @@ Records an interaction with a contact and appends it to the contact’s encounte
 
 --------------------------------------------------------------------------------------------------------------------
 
-### 4) View Contact: `view`
+### 5) Edit Encounter: `editencounter`
+
+Updates an existing encounter for a contact.
+
+**Format**
+`editencounter PERSON_INDEX ENCOUNTER_INDEX [d/DATE] [t/TIME] [l/LOCATION] [desc/DESCRIPTION] [out/OUTCOME]`
+
+**Parameters**
+- `PERSON_INDEX` (compulsory): target contact in current list
+- `ENCOUNTER_INDEX` (compulsory): target encounter from the viewed encounter cards
+- At least one prefixed field must be provided
+
+**Encounter index mapping**
+- Encounter cards shown in `view` are numbered newest first.
+- `ENCOUNTER_INDEX 1` means the most recent encounter shown as `#1`.
+
+**Examples**
+- `editencounter 1 1 desc/Updated observation notes`
+- `editencounter 1 2 d/2026-03-27 t/20:15 l/Tanjong Pagar out/`
+
+**Validation**
+- PERSON_INDEX must exist in the current contact list.
+- ENCOUNTER_INDEX must exist for that contact.
+- Provided fields use the same validation rules as `log`.
+- `out/` with an empty value clears outcome.
+
+**Success output**
+`Edited encounter #[ENCOUNTER_INDEX] for [Name].`
+
+--------------------------------------------------------------------------------------------------------------------
+
+### 6) View Contact: `view`
 
 Displays the full profile of a contact and their chronological encounter history.
 
@@ -222,7 +299,7 @@ Displays the full profile of a contact and their chronological encounter history
 
 --------------------------------------------------------------------------------------------------------------------
 
-### 5) Search Contacts: `find`
+### 7) Search Contacts: `find`
 
 Retrieves contacts by keyword across multiple fields.
 
@@ -239,6 +316,65 @@ Retrieves contacts by keyword across multiple fields.
 - Matched fields: **Name**, **Alias**, **Notes**
 - If no matches:  
   `No contacts found matching the given keywords.`
+
+--------------------------------------------------------------------------------------------------------------------
+
+### 8) Export encounters to CSV: `export`
+
+Exports all encounters whose **location** matches the value you give, to a UTF-8 CSV file. Rows are sorted by encounter date-time (earliest first).
+
+**Format**
+`export l/LOCATION`
+
+**Parameters**
+- `l/LOCATION` (compulsory): must match encounter locations the same way as stored (see **Behaviour**).
+
+**Example**
+`export l/Harbor District`
+
+#### Behaviour
+- Matching is **case-insensitive**. Leading and trailing spaces on your input and on each stored encounter location are ignored; the trimmed strings must be equal.
+- The file is written under the app home directory to `exports/CrimeWatch-export-<timestamp>.csv`, where `<timestamp>` is in `yyyyMMdd-HHmmss` form (local time when the command runs).
+- CSV columns (header row): `encounterTimestamp`, `encounterDescription`, `encounterOutcome`, `contactName`, `contactTags`. Tags for a contact are comma-separated and sorted alphabetically. Fields are quoted and follow standard CSV escaping for double quotes.
+
+#### Outcomes
+- **Success:** `Exported N matching encounters to exports/CrimeWatch-export-<timestamp>.csv.` (with the actual path shown).
+- **No matching encounters:** the command fails with `No encounters found at location <your location>.` — **no file** is created.
+- **Invalid format** (e.g. missing `l/`, wrong shape): invalid command format message referencing `export` usage.
+- **Blank location** (after trim): `Encounter location can take any value, and should not be blank`
+- **Write error** (e.g. cannot create `exports/`): `Failed to export to <path>: <reason>`
+
+--------------------------------------------------------------------------------------------------------------------
+
+### 9) Sort Contacts: `sort`
+
+Sorts the currently displayed contact list by a chosen criterion.
+
+**Format**
+`sort CRITERION`
+
+**Allowed criteria** (case-insensitive)
+- `location`
+- `tag`
+- `alphabetical`
+- `status`
+- `recent`
+
+**Examples**
+- `sort location`
+- `sort tag`
+- `sort alphabetical`
+- `sort status`
+- `sort recent`
+
+**Behaviour**
+- Sorting is applied to the displayed list view.
+- `sort location`: uses each contact's most recently logged encounter location; contacts without encounters appear last.
+- `sort tag`: uses each contact's alphabetically smallest tag; contacts without tags appear last.
+- `sort alphabetical`: sorts by contact name (A-Z).
+- `sort status`: sorts by stage/status alphabetically.
+- `sort recent`: sorts by most recently encountered first.
+- Ties are resolved by contact name in alphabetical order.
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -287,12 +423,16 @@ _Details coming soon ..._
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Command summary (MVP)
+## Command summary
 
 Action | Format | Example
 ---|---|---
 Add Contact | `add n/NAME a/ALIAS s/STAGE [r/RISK] [note/NOTES]` | `add n/John Tan a/Ah Boy s/surveillance`
+Edit Contact | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [s/STAGE] [al/ALIAS(,ALIAS...)] [note/NOTES] [r/RISK] [t/TAG]...` | `edit 1 p/91234567 r/high`
 Delete Contact | `delete INDEX` | `delete 3`
 Log Encounter | `log INDEX d/DATE t/TIME l/LOCATION desc/DESCRIPTION [out/OUTCOME]` | `log 1 d/2026-02-21 t/18:30 l/Maxwell Road desc/Met...`
+Edit Encounter | `editencounter PERSON_INDEX ENCOUNTER_INDEX [d/DATE] [t/TIME] [l/LOCATION] [desc/DESCRIPTION] [out/OUTCOME]` | `editencounter 1 1 desc/Updated notes`
 View Contact | `view INDEX` | `view 1`
 Search Contacts | `find KEYWORD [MORE_KEYWORDS]` | `find mike marina`
+Export encounters (CSV) | `export l/LOCATION` | `export l/Harbor District`
+Sort Contacts | `sort CRITERION` | `sort location`

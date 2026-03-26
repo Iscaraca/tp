@@ -16,6 +16,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Encounter;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Notes;
+import seedu.address.model.person.Password;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.Reminder;
@@ -38,6 +39,7 @@ class JsonAdaptedPerson {
     private final List<String> aliases = new ArrayList<>();
     private final String notes;
     private final String risk;
+    private final String password;
     private final List<JsonAdaptedTag> tags = new ArrayList<>();
     private final List<JsonAdaptedEncounter> encounters = new ArrayList<>();
     private final List<JsonAdaptedReminder> reminders = new ArrayList<>();
@@ -54,6 +56,7 @@ class JsonAdaptedPerson {
             @JsonProperty("aliases") List<String> aliases,
             @JsonProperty("notes") String notes,
             @JsonProperty("risk") String risk,
+            @JsonProperty("password") String password,
             @JsonProperty("tags") List<JsonAdaptedTag> tags,
             @JsonProperty("encounters") List<JsonAdaptedEncounter> encounters,
             @JsonProperty("reminders") List<JsonAdaptedReminder> reminders) {
@@ -67,6 +70,7 @@ class JsonAdaptedPerson {
         }
         this.notes = notes;
         this.risk = risk;
+        this.password = password;
         if (tags != null) {
             this.tags.addAll(tags);
         }
@@ -92,6 +96,7 @@ class JsonAdaptedPerson {
                 .collect(Collectors.toList()));
         notes = source.getNotes().value;
         risk = source.getRisk().toString();
+        password = source.getPassword() == null ? null : source.getPassword().toString();
         tags.addAll(source.getTags().stream()
                 .map(JsonAdaptedTag::new)
                 .collect(Collectors.toList()));
@@ -203,8 +208,17 @@ class JsonAdaptedPerson {
         }
 
         final Set<Tag> modelTags = new HashSet<>(personTags);
+        final Password modelPassword;
+        if (password == null) {
+            modelPassword = null;
+        } else if (!Password.isValidPassword(password)) {
+            throw new IllegalValueException(Password.MESSAGE_CONSTRAINTS);
+        } else {
+            modelPassword = new Password(password);
+        }
+
         return new Person(modelName, modelPhone, modelEmail, modelAddress, modelStage,
-                personAliases, modelNotes, modelRisk, modelTags, personEncounters, personReminders);
+                personAliases, modelNotes, modelRisk, modelTags, personEncounters, personReminders, modelPassword);
     }
 
 }
