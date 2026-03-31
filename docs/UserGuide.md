@@ -12,7 +12,7 @@ CrimeWatch is a **command-line contact tracking tool** designed specifically for
 
 ### Why CrimeWatch?
 
-Traditional contact apps are not suitable for undercover operations—they store unnecessary personal information like phone numbers and emails that have no place in a suspect investigation. CrimeWatch is purpose-built for your workflow:
+Traditional contact apps clutter investigations with unnecessary fields and lack investigation-focused features. CrimeWatch is purpose-built for your workflow, enabling you to store contact details when relevant while prioritizing investigation stages, risk levels, and encounter logging:
 
 - **Suspect-focused tracking**: Manage suspects (not regular contacts) with investigation stages and risk levels
 - **Encounter logging**: Record every interaction location, time, and observations for building case evidence
