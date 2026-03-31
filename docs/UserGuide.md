@@ -2,11 +2,36 @@
 layout: page
 title: User Guide
 ---
-## Who is this guide for?
-This guide is intended for users who prefer fast, keyboard-driven workflows. You should be comfortable with basic computer operations such as installing software and using a command terminal. No programming experience is required.
+
+* Table of Contents
+{:toc}
 
 ## What is CrimeWatch?
-CrimeWatch is a CLI-based contact tracking tool for managing **person-of-interest profiles** and their **encounter logs**. It supports the following features:
+
+CrimeWatch is a **command-line contact tracking tool** designed specifically for **law enforcement undercover agents and investigators** to manage suspect profiles and investigation encounters. Instead of carrying physical notebooks or risky digital records on your phone, CrimeWatch allows you to securely and efficiently track suspects, their aliases, risk levels, and encounter history from a single CLI interface.
+
+### Why CrimeWatch?
+
+Traditional contact apps are not suitable for undercover operations—they store unnecessary personal information like phone numbers and emails that have no place in a suspect investigation. CrimeWatch is purpose-built for your workflow:
+
+- **Suspect-focused tracking**: Manage suspects (not regular contacts) with investigation stages and risk levels
+- **Encounter logging**: Record every interaction location, time, and observations for building case evidence
+- **Quick, keyboard-driven**: Fast command-line interface—no clicking through menus, no distractions
+- **Secure data structure**: Stores only investigation-relevant information
+- **Bulk reporting**: Export encounter logs by location for case analysis
+
+### Who is this guide for?
+
+This guide is intended for **undercover agents, detective investigators, and law enforcement personnel** who prefer fast, keyboard-driven workflows over graphical interfaces. You should be comfortable with:
+- Basic computer operations (installing software, using command terminals)
+- Following structured command formats
+- Working in a CLI environment
+
+No programming experience is required.
+
+### Key Features
+
+CrimeWatch supports the following features:
 
 1. Add Contact
 2. Edit Contact
@@ -35,8 +60,7 @@ CrimeWatch is a CLI-based contact tracking tool for managing **person-of-interes
 | Sort Contacts | `sort CRITERION` |
 
 
-* Table of Contents
-{:toc}
+
 
 --------------------------------------------------------------------------------------------------------------------
 
@@ -73,18 +97,7 @@ CrimeWatch is a CLI-based contact tracking tool for managing **person-of-interes
 
 --------------------------------------------------------------------------------------------------------------------
 
-## Notes about the command format
 
-- Words in `UPPER_CASE` are placeholders you replace with your own values.
-- Prefixes use the format `prefix/value` (e.g. `n/John Tan`).
-- Parameters can be in any order unless stated otherwise.
-- Optional parameters are shown in square brackets `[LIKE_THIS]`.
-- **Do not repeat prefixes** in the same command (e.g. `n/... n/...`) — this is treated as an error.
-- Index-based commands (`view`, `log`, `delete`, `edit`, `remind`) use the **INDEX shown in the current contact list panel**.
-  - INDEX must be a positive integer: `1, 2, 3, ...`
-- For `editencounter`, use two indices: `PERSON_INDEX` from contact list and `ENCOUNTER_INDEX` from the viewed encounter cards.
-
---------------------------------------------------------------------------------------------------------------------
 
 ## Features
 
@@ -120,35 +133,17 @@ Format: `help`
 
 ### 1) Add Contact: `add`
 
-Creates a new contact profile (suspect / person of interest).
+Creates a new suspect profile with aliases, investigation stage, and risk level.
 
 **Format**
 `add n/NAME a/ALIAS s/STAGE [r/RISK] [note/NOTES]`
 
-Format: `add n/NAME a/ADDRESS s/STAGE [al/ALIAS(,ALIAS...)] [note/NOTES] [r/RISK] [t/TAG]...`
-
-<div markdown="span" class="alert alert-primary">:bulb: **Tip:**
-A person can have any number of tags (including 0), and aliases are comma-separated if more than one is provided.
-</div>
-
-Parameters:
-- `n/NAME` (required): contact name (alphanumeric + spaces, not blank)
-- `a/ADDRESS` (required): contact address
-- `s/STAGE` (required): one of `surveillance`, `approached`, `cooperating`, `arrested`, `closed` (case-insensitive)
-- `al/ALIAS(,ALIAS...)` (optional): alias list, comma-separated
-- `note/NOTES` (optional): notes up to 500 characters, no newlines
-- `r/RISK` (optional): one of `low`, `medium`, `high` (default: `medium`)
-- `t/TAG` (optional, repeatable): tag(s), alphanumeric
-
-Examples:
-* `add n/John Doe a/311, Clementi Ave 2, #02-25 s/surveillance`
-* `add n/Michael Lee a/Marina Bay Sands s/approached al/Big Mike, MLee note/Seen at Marina Bay r/high t/priority t/network`
 **Parameters**
-- `n/NAME` (compulsory): full name
-- `a/ALIAS` (compulsory): one or more aliases (**comma-separated**)
-- `s/STAGE` (compulsory): investigation stage
-- `r/RISK` (optional): risk level; default is `medium`
-- `note/NOTES` (optional): initial notes (up to 500 characters)
+- `n/NAME` (required): suspect's full name (alphanumeric + spaces, not blank)
+- `a/ALIAS` (required): one or more aliases, **comma-separated** (e.g. `a/Ah Boy, Johnny T`)
+- `s/STAGE` (required): investigation stage
+- `r/RISK` (optional): risk level—one of `low`, `medium`, `high` (default: `medium`)
+- `note/NOTES` (optional): initial notes (up to 500 characters, no newlines)
 
 **Examples**
 - `add n/John Tan a/Ah Boy s/surveillance`
@@ -160,37 +155,27 @@ Examples:
 - Length: 1–100 characters
 - Allowed characters: letters, spaces, apostrophes, hyphens
 - Leading/trailing spaces ignored; multiple internal spaces collapsed
-- Error message (invalid):
-  `Invalid name. Name must contain only letters, spaces, apostrophes or hyphens, and cannot be empty.`
+- Error if invalid: `Invalid name. Name must contain only letters, spaces, apostrophes or hyphens, and cannot be empty.`
 
 **ALIAS**
 - 1–50 characters per alias
 - Allowed characters: alphanumeric and spaces
-- Multiple aliases separated by commas (e.g. `a/Ah Boy, Johnny T`)
-- Error message (invalid):
-  `Invalid alias. Alias must be non-empty and alphanumeric.`
+- Multiple aliases separated by commas (e.g., `a/Ah Boy, Johnny T`)
+- Error if invalid: `Invalid alias. Alias must be non-empty and alphanumeric.`
 
 **STAGE** (case-insensitive)
-Allowed values:
-- `surveillance`
-- `approached`
-- `cooperating`
-- `arrested`
-- `closed`
-
-Error message (invalid):
-`Invalid stage. Allowed values: surveillance, approached, cooperating, arrested, closed.`
+Allowed values: `surveillance`, `approached`, `cooperating`, `arrested`, `closed`
+- Error if invalid: `Invalid stage. Allowed values: surveillance, approached, cooperating, arrested, closed.`
 
 **RISK** (optional)
 Allowed values: `low`, `medium`, `high` (default: `medium`)
 
-#### Duplicate handling
+#### Duplicate detection
 A new contact is considered a duplicate if:
 - NAME is identical (case-insensitive, trimmed), **and**
-- at least one alias overlaps.
+- at least one ALIAS overlaps.
 
-Error message:
-`Duplicate contact detected. A contact with similar name and alias already exists.`
+Error if duplicate: `Duplicate contact detected. A contact with similar name and alias already exists.`
 
 **Success output**
 `New contact added: [Name] (Stage: X, Risk: Y)`
@@ -460,8 +445,29 @@ _Details coming soon ..._
 
 ## FAQ
 
-**Q**: How do I transfer my data to another Computer?<br>
-**A**: Install the app in the other computer and overwrite the empty data file it creates with the file that contains the data of your previous AddressBook home folder.
+**Q: How do I transfer my data to another computer?**<br>
+**A**: Install the app on the other computer and overwrite the empty data file it creates with the `addressbook.json` file from your previous CrimeWatch home folder.
+
+**Q: Can I edit suspect records after adding them?**<br>
+**A**: Yes, use the `edit` command to update any field—name, aliases, stage, risk level, or notes. Existing encounters are preserved.
+
+**Q: What happens if I delete a suspect profile?**<br>
+**A**: All associated encounters and reminders are permanently deleted as well. Make sure you export encounter logs to CSV first if you need to retain that data.
+
+**Q: How do I export encounter data for analysis?**<br>
+**A**: Use the `export l/LOCATION` command to export all encounters at a specific location to a CSV file. The file is saved in the `exports/` folder under your app home directory.
+
+**Q: What if I need to modify an encounter record I logged earlier?**<br>
+**A**: Use the `editencounter` command with the person index and encounter index. Type `view INDEX` first to see all encounters for that suspect, then identify which encounter to edit.
+
+**Q: How do I search for a suspect if I only remember part of their name or alias?**<br>
+**A**: Use the `find` command with a keyword. The search is case-insensitive and matches across names, aliases, and notes. For example: `find mike marina`.
+
+**Q: Can I track the same suspect across multiple investigation stages?**<br>
+**A**: Yes. Use the `edit` command to update the `s/STAGE` field as the investigation progresses (e.g., from `surveillance` to `arrested` to `closed`).
+
+**Q: My command is giving an error even though it looks correct. What should I check?**<br>
+**A**: 1) Ensure you're not repeating prefixes (e.g., `n/... n/...` is invalid). 2) Check date/time formats are exactly `YYYY-MM-DD` and `HH:mm`. 3) Verify the index exists in the current contact list. 4) If copying from a PDF, manually retype the command to avoid hidden space issues.
 
 --------------------------------------------------------------------------------------------------------------------
 
