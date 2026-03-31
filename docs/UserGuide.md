@@ -31,18 +31,7 @@ No programming experience is required.
 
 ### Key Features
 
-CrimeWatch supports the following features:
-
-1. Add Contact
-2. Edit Contact
-3. Delete Contact
-4. Log Encounter
-5. Edit Encounter
-6. View Contact
-7. Set Reminder
-8. Search Contacts
-9. Export encounters (CSV)
-10. Sort Contacts
+CrimeWatch supports 10 core features: **Add**, **Edit**, **Delete** contacts | **Log** and **Edit** encounters | **View** contact details | **Set reminders** | **Search** by keywords | **Export** to CSV | **Sort** the contact list. See [Command summary](#command-summary) for detailed formats.
 
 ## Command summary
 
@@ -71,7 +60,7 @@ CrimeWatch supports the following features:
 
 2. Next, download the latest `.jar` file from [here](https://github.com/se-edu/addressbook-level3/releases).
 
-3. Then, move the 'crimewatch.jar' file to the folder you want to use as the _home folder_ for your AddressBook. (A new, empty folder is recommended) <br>
+3. Then, move the 'crimewatch.jar' file to the folder you want to use as the _home folder_ for CrimeWatch. (A new, empty folder is recommended) <br>
 ![Moving .jar file to folder](images/MoveFile.gif)
 
 5. Now, open a command terminal from the folder you put the .jar file in. In the terminal, use the `java -jar addressbook.jar` command to run the application. <br>
@@ -426,11 +415,11 @@ Format: `exit`
 
 ### Saving the data
 
-AddressBook data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+CrimeWatch data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
 
 ### Editing the data file
 
-AddressBook data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+CrimeWatch data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
 
 <div markdown="span" class="alert alert-warning">:exclamation: **Caution:**
 If your changes to the data file makes its format invalid, AddressBook will discard all data and start with an empty data file at the next run. Hence, it is recommended to take a backup of the file before editing it.<br>
