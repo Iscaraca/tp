@@ -105,7 +105,7 @@ view 1
   ![Moving .jar file to folder](images/ug-move-to-home-folder.png)
 
 4. Open a terminal in that folder:
-  ![Open Terminal from folder](images/ug-open-terminal.png)
+  ![Open Terminal from folder](images/ug-open-from-terminal.png)
 
 5. Run the command to launch the app:
 
