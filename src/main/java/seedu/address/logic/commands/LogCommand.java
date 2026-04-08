@@ -82,7 +82,8 @@ public class LogCommand extends Command {
                 personToLog.getNotes(),
                 personToLog.getRisk(),
                 personToLog.getTags(),
-                updatedEncounters);
+                updatedEncounters,
+                personToLog.getReminders());
 
         model.setPerson(personToLog, updatedPerson);
 
