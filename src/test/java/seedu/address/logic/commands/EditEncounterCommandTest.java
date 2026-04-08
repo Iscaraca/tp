@@ -232,7 +232,8 @@ public class EditEncounterCommandTest {
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.setPerson(withEncounterAndReminder, expectedEditedPerson);
 
-        String expectedMessage = String.format(EditEncounterCommand.MESSAGE_SUCCESS, 1, withEncounterAndReminder.getName());
+        String expectedMessage = String.format(
+                EditEncounterCommand.MESSAGE_SUCCESS, 1, withEncounterAndReminder.getName());
         assertCommandSuccess(command, model, expectedMessage, expectedModel);
     }
 
