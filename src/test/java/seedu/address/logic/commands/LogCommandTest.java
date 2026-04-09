@@ -186,7 +186,7 @@ public class LogCommandTest {
     }
 
     @Test
-    public void execute_validIndexUnfilteredList_passwordProtectedContact_passwordPreserved() {
+    public void execute_protectedContact_passwordPreserved() {
         Person original = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         Person protectedPerson = new PersonBuilder(original)
                 .withPassword("hunter2")
