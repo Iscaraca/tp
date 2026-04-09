@@ -102,18 +102,29 @@ public class EditEncounterCommand extends Command {
      * Rebuilds the contact with updated encounter history after an encounter edit.
      */
     private Person createEditedPerson(Person personToEdit, List<Encounter> updatedEncounters) {
+        var name = personToEdit.getName();
+        var phone = personToEdit.getPhone();
+        var email = personToEdit.getEmail();
+        var address = personToEdit.getAddress();
+        var stage = personToEdit.getStage();
+        var aliases = personToEdit.getAliases();
+        var notes = personToEdit.getNotes();
+        var risk = personToEdit.getRisk();
+        var tags = personToEdit.getTags();
+        var reminders = personToEdit.getReminders();
+
         return new Person(
-                personToEdit.getName(),
-                personToEdit.getPhone(),
-                personToEdit.getEmail(),
-                personToEdit.getAddress(),
-                personToEdit.getStage(),
-                personToEdit.getAliases(),
-                personToEdit.getNotes(),
-                personToEdit.getRisk(),
-                personToEdit.getTags(),
+                name,
+                phone,
+                email,
+                address,
+                stage,
+                aliases,
+                notes,
+                risk,
+                tags,
                 updatedEncounters,
-                personToEdit.getReminders());
+                reminders);
     }
 
     private static Encounter createEditedEncounter(Encounter encounterToEdit, EditEncounterDescriptor descriptor) {
