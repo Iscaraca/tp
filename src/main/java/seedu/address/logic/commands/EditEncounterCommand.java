@@ -92,7 +92,17 @@ public class EditEncounterCommand extends Command {
         List<Encounter> updatedEncounters = new ArrayList<>(existingEncounters);
         updatedEncounters.set(encounterZeroBased, editedEncounter);
 
-        Person editedPerson = new Person(
+        Person editedPerson = createEditedPerson(personToEdit, updatedEncounters);
+
+        model.setPerson(personToEdit, editedPerson);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, encounterDisplayOneBased, personToEdit.getName()));
+    }
+
+    /**
+     * Rebuilds the contact with updated encounter history after an encounter edit.
+     */
+    private Person createEditedPerson(Person personToEdit, List<Encounter> updatedEncounters) {
+        return new Person(
                 personToEdit.getName(),
                 personToEdit.getPhone(),
                 personToEdit.getEmail(),
@@ -104,9 +114,6 @@ public class EditEncounterCommand extends Command {
                 personToEdit.getTags(),
                 updatedEncounters,
                 personToEdit.getReminders());
-
-        model.setPerson(personToEdit, editedPerson);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, encounterDisplayOneBased, personToEdit.getName()));
     }
 
     private static Encounter createEditedEncounter(Encounter encounterToEdit, EditEncounterDescriptor descriptor) {
