@@ -112,6 +112,7 @@ public class EditEncounterCommand extends Command {
         var risk = personToEdit.getRisk();
         var tags = personToEdit.getTags();
         var reminders = personToEdit.getReminders();
+        var password = personToEdit.getPassword();
 
         return new Person(
                 name,
@@ -124,7 +125,8 @@ public class EditEncounterCommand extends Command {
                 risk,
                 tags,
                 updatedEncounters,
-                reminders);
+                reminders,
+                password);
     }
 
     private static Encounter createEditedEncounter(Encounter encounterToEdit, EditEncounterDescriptor descriptor) {
