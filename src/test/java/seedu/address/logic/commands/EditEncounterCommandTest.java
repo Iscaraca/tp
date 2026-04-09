@@ -76,8 +76,10 @@ public class EditEncounterCommandTest {
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.setPerson(withEncounters, expectedEditedPerson);
 
-        String expectedMessage = String.format(EditEncounterCommand.MESSAGE_SUCCESS, 1, withEncounters.getName());
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        CommandResult expectedResult = new CommandResult(
+                String.format(EditEncounterCommand.MESSAGE_SUCCESS, 1, expectedEditedPerson.getName()),
+                expectedEditedPerson);
+        assertCommandSuccess(command, model, expectedResult, expectedModel);
     }
 
     @Test
@@ -100,8 +102,10 @@ public class EditEncounterCommandTest {
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.setPerson(withEncounters, expectedEditedPerson);
 
-        String expectedMessage = String.format(EditEncounterCommand.MESSAGE_SUCCESS, 1, withEncounters.getName());
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        CommandResult expectedResult = new CommandResult(
+                String.format(EditEncounterCommand.MESSAGE_SUCCESS, 1, expectedEditedPerson.getName()),
+                expectedEditedPerson);
+        assertCommandSuccess(command, model, expectedResult, expectedModel);
     }
 
     @Test
@@ -124,8 +128,10 @@ public class EditEncounterCommandTest {
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.setPerson(withEncounters, expectedEditedPerson);
 
-        String expectedMessage = String.format(EditEncounterCommand.MESSAGE_SUCCESS, 1, withEncounters.getName());
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        CommandResult expectedResult = new CommandResult(
+                String.format(EditEncounterCommand.MESSAGE_SUCCESS, 1, expectedEditedPerson.getName()),
+                expectedEditedPerson);
+        assertCommandSuccess(command, model, expectedResult, expectedModel);
     }
 
     @Test
@@ -148,8 +154,10 @@ public class EditEncounterCommandTest {
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.setPerson(withEncounters, expectedEditedPerson);
 
-        String expectedMessage = String.format(EditEncounterCommand.MESSAGE_SUCCESS, 1, withEncounters.getName());
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        CommandResult expectedResult = new CommandResult(
+                String.format(EditEncounterCommand.MESSAGE_SUCCESS, 1, expectedEditedPerson.getName()),
+                expectedEditedPerson);
+        assertCommandSuccess(command, model, expectedResult, expectedModel);
     }
 
     @Test
@@ -232,9 +240,10 @@ public class EditEncounterCommandTest {
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.setPerson(withEncounterAndReminder, expectedEditedPerson);
 
-        String expectedMessage = String.format(
-                EditEncounterCommand.MESSAGE_SUCCESS, 1, withEncounterAndReminder.getName());
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        CommandResult expectedResult = new CommandResult(
+                String.format(EditEncounterCommand.MESSAGE_SUCCESS, 1, expectedEditedPerson.getName()),
+                expectedEditedPerson);
+        assertCommandSuccess(command, model, expectedResult, expectedModel);
     }
 
     @Test
@@ -274,9 +283,10 @@ public class EditEncounterCommandTest {
         Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
         expectedModel.setPerson(protectedPerson, expectedEditedPerson);
 
-        String expectedMessage = String.format(
-                EditEncounterCommand.MESSAGE_SUCCESS, 1, protectedPerson.getName());
-        assertCommandSuccess(command, model, expectedMessage, expectedModel);
+        CommandResult expectedResult = new CommandResult(
+                String.format(EditEncounterCommand.MESSAGE_SUCCESS, 1, expectedEditedPerson.getName()),
+                expectedEditedPerson);
+        assertCommandSuccess(command, model, expectedResult, expectedModel);
     }
 
     @Test
