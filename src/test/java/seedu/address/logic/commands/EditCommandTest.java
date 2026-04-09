@@ -15,7 +15,9 @@ import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -30,6 +32,8 @@ import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.person.Encounter;
 import seedu.address.model.person.Person;
+import seedu.address.model.person.Reminder;
+import seedu.address.model.person.Risk;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 
@@ -56,7 +60,8 @@ public class EditCommandTest {
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
 
-        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        CommandResult expectedResult = new CommandResult(expectedMessage, editedPerson);
+        assertCommandSuccess(editCommand, model, expectedResult, expectedModel);
     }
 
     @Test
@@ -77,7 +82,8 @@ public class EditCommandTest {
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(lastPerson, editedPerson);
 
-        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        CommandResult expectedResult = new CommandResult(expectedMessage, editedPerson);
+        assertCommandSuccess(editCommand, model, expectedResult, expectedModel);
     }
 
     @Test
@@ -89,7 +95,8 @@ public class EditCommandTest {
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
 
-        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        CommandResult expectedResult = new CommandResult(expectedMessage, editedPerson);
+        assertCommandSuccess(editCommand, model, expectedResult, expectedModel);
     }
 
     @Test
@@ -106,7 +113,8 @@ public class EditCommandTest {
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(model.getFilteredPersonList().get(0), editedPerson);
 
-        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        CommandResult expectedResult = new CommandResult(expectedMessage, editedPerson);
+        assertCommandSuccess(editCommand, model, expectedResult, expectedModel);
     }
 
     @Test
@@ -196,7 +204,8 @@ public class EditCommandTest {
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(protectedPerson, expectedEdited);
 
-        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        CommandResult expectedResult = new CommandResult(expectedMessage, expectedEdited);
+        assertCommandSuccess(editCommand, model, expectedResult, expectedModel);
     }
 
     @Test
@@ -213,7 +222,8 @@ public class EditCommandTest {
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(firstBefore, expectedEdited);
 
-        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        CommandResult expectedResult = new CommandResult(expectedMessage, expectedEdited);
+        assertCommandSuccess(editCommand, model, expectedResult, expectedModel);
     }
 
     @Test
@@ -239,10 +249,73 @@ public class EditCommandTest {
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.setPerson(personWithEncounter, expectedEditedPerson);
 
-        assertCommandSuccess(editCommand, model, expectedMessage, expectedModel);
+        CommandResult expectedResult = new CommandResult(expectedMessage, expectedEditedPerson);
+        assertCommandSuccess(editCommand, model, expectedResult, expectedModel);
         assertEquals(1, model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()).getEncounters().size());
         assertEquals(existingEncounter, model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased())
                 .getEncounters().get(0));
+    }
+
+    @Test
+    public void execute_editFieldsSpecified_preservesReminders() {
+        Reminder existingReminder = new Reminder(
+                LocalDate.of(2026, 4, 1),
+                LocalTime.of(8, 45),
+                "Briefing");
+        Person originalPerson = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person personWithReminder = new Person(
+                originalPerson.getName(),
+                originalPerson.getPhone(),
+                originalPerson.getEmail(),
+                originalPerson.getAddress(),
+                originalPerson.getStage(),
+                originalPerson.getAliases(),
+                originalPerson.getNotes(),
+                originalPerson.getRisk(),
+                originalPerson.getTags(),
+                originalPerson.getEncounters(),
+                java.util.List.of(existingReminder),
+                originalPerson.getPassword());
+        model.setPerson(originalPerson, personWithReminder);
+
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withRisk(VALID_RISK_HIGH).build();
+        EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, descriptor);
+
+        Person expectedEditedPerson = new Person(
+                personWithReminder.getName(),
+                personWithReminder.getPhone(),
+                personWithReminder.getEmail(),
+                personWithReminder.getAddress(),
+                personWithReminder.getStage(),
+                personWithReminder.getAliases(),
+                personWithReminder.getNotes(),
+                Risk.fromString(VALID_RISK_HIGH),
+                personWithReminder.getTags(),
+                personWithReminder.getEncounters(),
+                java.util.List.of(existingReminder),
+                personWithReminder.getPassword());
+        String expectedMessage =
+                String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, Messages.format(expectedEditedPerson));
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.setPerson(personWithReminder, expectedEditedPerson);
+
+        CommandResult expectedResult = new CommandResult(expectedMessage, expectedEditedPerson);
+        assertCommandSuccess(editCommand, model, expectedResult, expectedModel);
+        assertEquals(java.util.List.of(existingReminder),
+                model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()).getReminders());
+    }
+
+    @Test
+    public void execute_success_returnsEditedPersonToView() throws Exception {
+        EditPersonDescriptor descriptor = new EditPersonDescriptorBuilder().withRisk(VALID_RISK_HIGH).build();
+        EditCommand editCommand = new EditCommand(INDEX_FIRST_PERSON, descriptor);
+
+        CommandResult result = editCommand.execute(model);
+
+        assertTrue(result.getPersonToView().isPresent());
+        assertEquals(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()),
+                result.getPersonToView().get());
     }
 
     @Test

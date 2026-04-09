@@ -11,6 +11,7 @@ import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Comparator;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -143,6 +144,36 @@ public class RemindCommandTest {
     public void execute_unprotectedUnexpectedPassword_failure() {
         RemindCommand remindCommand = new RemindCommand(INDEX_FIRST_PERSON, REMINDER_LATER, Optional.of("x"));
         assertCommandFailure(remindCommand, model, RemindCommand.MESSAGE_UNEXPECTED_PASSWORD_FOR_REMIND);
+    }
+
+    @Test
+    public void execute_sortedList_usesDisplayedIndex() {
+        model.setPersonSortComparator(
+                Comparator.comparing((Person person) -> person.getName().fullName).reversed());
+        Person personToRemind = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        RemindCommand remindCommand = new RemindCommand(INDEX_FIRST_PERSON, REMINDER_LATER);
+
+        Person expectedUpdated = new Person(
+                personToRemind.getName(),
+                personToRemind.getPhone(),
+                personToRemind.getEmail(),
+                personToRemind.getAddress(),
+                personToRemind.getStage(),
+                personToRemind.getAliases(),
+                personToRemind.getNotes(),
+                personToRemind.getRisk(),
+                personToRemind.getTags(),
+                personToRemind.getEncounters(),
+                java.util.List.of(REMINDER_LATER),
+                personToRemind.getPassword());
+        Model expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        expectedModel.setPersonSortComparator(
+                Comparator.comparing((Person person) -> person.getName().fullName).reversed());
+        expectedModel.setPerson(personToRemind, expectedUpdated);
+
+        String expectedMessage = String.format(RemindCommand.MESSAGE_SUCCESS,
+                personToRemind.getName(), REMINDER_LATER.getDate(), REMINDER_LATER.getTime());
+        assertCommandSuccess(remindCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
