@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -84,13 +85,15 @@ public class EditEncounterCommand extends Command {
             throw new CommandException(MESSAGE_INVALID_ENCOUNTER_DISPLAYED_INDEX);
         }
 
-        // Encounter cards are shown in reverse-chronological order where #1 is the most recent.
-        int encounterZeroBased = existingEncounters.size() - encounterDisplayOneBased;
-        Encounter encounterToEdit = existingEncounters.get(encounterZeroBased);
+        List<Encounter> encountersByDisplayOrder = new ArrayList<>(existingEncounters);
+        encountersByDisplayOrder.sort(Comparator.comparing((Encounter encounter) -> encounter.dateTime).reversed());
+        int encounterZeroBased = encounterDisplayOneBased - 1;
+        Encounter encounterToEdit = encountersByDisplayOrder.get(encounterZeroBased);
+        int storageIndex = existingEncounters.indexOf(encounterToEdit);
         Encounter editedEncounter = createEditedEncounter(encounterToEdit, editEncounterDescriptor);
 
         List<Encounter> updatedEncounters = new ArrayList<>(existingEncounters);
-        updatedEncounters.set(encounterZeroBased, editedEncounter);
+        updatedEncounters.set(storageIndex, editedEncounter);
 
         Person editedPerson = createEditedPerson(personToEdit, updatedEncounters);
 

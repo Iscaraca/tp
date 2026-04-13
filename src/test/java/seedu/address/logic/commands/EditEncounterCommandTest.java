@@ -183,6 +183,26 @@ public class EditEncounterCommandTest {
     }
 
     @Test
+    public void execute_encounterDisplayIndex_usesShownOrder() throws Exception {
+        Person original = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Encounter latest = new Encounter(LocalDateTime.of(2026, 3, 30, 12, 0), "A", "Latest", Optional.empty());
+        Encounter oldest = new Encounter(LocalDateTime.of(2026, 3, 20, 12, 0), "B", "Oldest", Optional.empty());
+        Encounter middle = new Encounter(LocalDateTime.of(2026, 3, 25, 12, 0), "C", "Middle", Optional.empty());
+        Person withUnsortedStorage = new PersonBuilder(original).withEncounters(latest, oldest, middle).build();
+        model.setPerson(original, withUnsortedStorage);
+
+        EditEncounterDescriptor descriptor = new EditEncounterDescriptor();
+        descriptor.setTime(LocalTime.of(0, 0));
+        EditEncounterCommand command = new EditEncounterCommand(INDEX_FIRST_PERSON, Index.fromOneBased(3), descriptor);
+        command.execute(model);
+
+        List<Encounter> result = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()).getEncounters();
+        assertEquals(LocalTime.of(12, 0), result.get(0).dateTime.toLocalTime());
+        assertEquals(LocalTime.of(0, 0), result.get(1).dateTime.toLocalTime());
+        assertEquals(LocalTime.of(12, 0), result.get(2).dateTime.toLocalTime());
+    }
+
+    @Test
     public void execute_preservesEncounterOrder() throws Exception {
         Person original = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
         Person withEncounters = new PersonBuilder(original).withEncounters(OLDER_ENCOUNTER, NEWER_ENCOUNTER).build();
