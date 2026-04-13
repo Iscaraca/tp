@@ -191,7 +191,9 @@ public class ModelManager implements Model {
     }
 
     @Override
-    public void saveSortCriterion(String criterion) { userPrefs.setSortCriterion(criterion); }
+    public void saveSortCriterion(String criterion) {
+        userPrefs.setSortCriterion(criterion);
+    }
 
     @Override
     public void updateFilteredPersonList(Predicate<Person> predicate) {

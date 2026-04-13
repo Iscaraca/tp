@@ -17,13 +17,8 @@ public class UserPrefs implements ReadOnlyUserPrefs {
     private Path addressBookFilePath = Paths.get("data" , "addressbook.json");
     private String sortCriterion = "";
 
-    public String getSortCriterion() { return sortCriterion; }
-    public void setSortCriterion(String criterion) { this.sortCriterion = criterion; }
-
-    /**
-     * Creates a {@code UserPrefs} with default values.
-     */
-    public UserPrefs() {}
+    public UserPrefs() {
+    }
 
     /**
      * Creates a {@code UserPrefs} with the prefs in {@code userPrefs}.
@@ -31,6 +26,14 @@ public class UserPrefs implements ReadOnlyUserPrefs {
     public UserPrefs(ReadOnlyUserPrefs userPrefs) {
         this();
         resetData(userPrefs);
+    }
+
+    public String getSortCriterion() {
+        return sortCriterion;
+    }
+
+    public void setSortCriterion(String criterion) {
+        this.sortCriterion = criterion;
     }
 
     /**
