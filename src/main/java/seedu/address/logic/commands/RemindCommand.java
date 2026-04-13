@@ -35,6 +35,7 @@ public class RemindCommand extends Command {
             + PREFIX_NOTES + "Meet informant";
 
     public static final String MESSAGE_SUCCESS = "Reminder set for %1$s on %2$s %3$s.";
+    public static final String MESSAGE_DUPLICATE_REMINDER = "This reminder already exists for this contact.";
 
     private final Index index;
     private final Reminder reminder;
@@ -60,6 +61,9 @@ public class RemindCommand extends Command {
         }
 
         Person targetPerson = lastShownList.get(index.getZeroBased());
+        if (targetPerson.getReminders().contains(reminder)) {
+            throw new CommandException(MESSAGE_DUPLICATE_REMINDER);
+        }
         model.addReminderToContact(index, reminder);
 
         return new CommandResult(String.format(MESSAGE_SUCCESS,

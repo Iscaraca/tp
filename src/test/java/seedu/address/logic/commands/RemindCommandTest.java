@@ -111,6 +111,20 @@ public class RemindCommandTest {
     }
 
     @Test
+    public void execute_duplicateReminder_failure() {
+        Person original = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person withReminder = new Person(
+                original.getName(), original.getPhone(), original.getEmail(),
+                original.getAddress(), original.getStage(), original.getAliases(),
+                original.getNotes(), original.getRisk(), original.getTags(),
+                original.getEncounters(), java.util.List.of(REMINDER_LATER), original.getPassword());
+        model.setPerson(original, withReminder);
+
+        RemindCommand remindCommand = new RemindCommand(INDEX_FIRST_PERSON, REMINDER_LATER);
+        assertCommandFailure(remindCommand, model, RemindCommand.MESSAGE_DUPLICATE_REMINDER);
+    }
+
+    @Test
     public void execute_sortedList_usesDisplayedIndex() {
         model.setPersonSortComparator(
                 Comparator.comparing((Person person) -> person.getName().fullName).reversed());
