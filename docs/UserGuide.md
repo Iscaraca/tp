@@ -501,5 +501,8 @@ _Details coming soon ..._
 
 1. **When using multiple screens**, if you move the application to a secondary screen, and later switch to using only the primary screen, the GUI will open off-screen. The remedy is to delete the `preferences.json` file created by the application before running the application again.
 2. **If you minimize the Help Window** and then run the `help` command (or use the `Help` menu, or the keyboard shortcut `F1`) again, the original Help Window will remain minimized, and no new Help Window will appear. The remedy is to manually restore the minimized Help Window.
+3. **Command output can exceed the default window size**, especially for long validation errors (e.g., malformed `find` usage). This may require both horizontal and vertical scrolling in the result area. The remedy is to widen the app window when reading long outputs.
+4. **At minimum window size, full profile content may be obscured after `view INDEX`**. In some cases, not all profile details are visible/scrollable unless the window is widened. The remedy is to increase the window width or height before reviewing full profile details.
+5. **Duplicate names are currently not allowed in `add`/`edit`**. Editing a contact’s name to another existing name can produce `This person already exists in CrimeWatch.` even when they are different people. The workaround is to keep names distinct (for example by adding an identifier in the name) and use aliases/tags for disambiguation.
 
 --------------------------------------------------------------------------------------------------------------------
