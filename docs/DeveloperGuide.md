@@ -16,7 +16,7 @@ AI tools such as Claude, ChatGPT was used to support:
 - All AI-generated content was reviewed, validated, and adapted by the development team to ensure correctness and alignment with project requirements.
 
 --------------------------------------------------------------------------------------------------------------------
-
+<div style="page-break-after: always;"></div>
 ## **Setting up, getting started**
 
 Refer to [_Setting up and getting started_](SettingUp.md).
@@ -729,7 +729,7 @@ Use case ends.
 * **Full Profile**: all details of a contact, including encounters and reminders, shown when viewing a protected contact with the correct password.
 
 --------------------------------------------------------------------------------------------------------------------
-
+<div style="page-break-after: always;"></div>
 ## **Appendix: Instructions for manual testing**
 
 Given below are manual tests for major functional paths and edge cases.
