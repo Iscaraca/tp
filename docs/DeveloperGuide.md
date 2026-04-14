@@ -866,3 +866,11 @@ Currently, `find` only searches by name, alias, and tag. A future version will e
 - `r/RISK` — filter contacts by risk level (e.g. `high`, `medium`, `low`)
 
 This allows investigators to narrow down contacts more precisely (e.g. all high-risk contacts currently under surveillance).
+
+---
+
+**4. Add challenge for clearcommand**
+
+Currently, `clear` can be executed without confirmation, which may lead to accidental data loss. A future version will add a confirmation step that prompts the user to type a randomly generated challenge string E.g. ABC123 before proceeding with the clear operation. 
+
+This helps prevent unintended deletions while still allowing power users to execute the command efficiently when needed.
