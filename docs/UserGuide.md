@@ -144,6 +144,10 @@ Shows a message explaining how to access the help page.
 
 Format: `help`
 
+**Screenshot (proper usage)**
+![Help command usage](images/commands/help.png)
+- **Description:** Runs `help` to open the help guide for command reference.
+
 ### 1) Add Contact: `add`
 
 Creates a new suspect profile.
@@ -167,6 +171,10 @@ Creates a new suspect profile.
 - `add n/John Tan p/98765432 e/johntan@example.com a/311, Clementi Ave 2, #02-25 s/surveillance`
 - `add n/Michael Lee p/91234567 e/mlee@example.com a/Marina Bay s/approached al/Big Mike, MLee note/Seen at Marina Bay r/high t/priority`
 - `add n/John Doe p/87654321 e/john@example.com a/Maxwell Road s/surveillance pw/password123`
+
+**Screenshot (proper usage)**
+![Add command usage](images/commands/add.png)
+- **Description:** Runs `add` to create a new suspect contact with the provided details.
 
 **Validation**
 - All required fields must be present
@@ -198,6 +206,10 @@ Updates details of an existing contact without deleting and re-adding the profil
 - `edit 1 pw/newpassword` (only when the contact is not password-protected yet)
 - `edit 1 n/UpdatedName pw/oldSecret` (required when the contact already has a password)
 
+**Screenshot (proper usage)**
+![Edit command usage](images/commands/edit.png)
+- **Description:** Runs `edit` to update selected fields of an existing contact by index.
+
 **Validation**
 - INDEX must exist in the current list.
 - Provided fields follow the same validation rules as `add`.
@@ -228,6 +240,10 @@ Removes a contact permanently, including all associated encounters and reminders
 **Examples**
 - `delete 3`
 - `delete 3 pw/oldSecret` (when the contact is password-protected)
+
+**Screenshot (proper usage)**
+![Delete command usage](images/commands/delete.png)
+- **Description:** Runs `delete` to remove a contact (and associated records) by index.
 
 **Validation**
 - INDEX must exist in the current list.
@@ -261,6 +277,10 @@ Records an interaction with a contact and appends it to the contact’s encounte
 
 **Example (password-protected contact)**
 `log 1 d/2026-02-21 t/18:30 l/Maxwell Road desc/Met at coffee shop pw/oldSecret`
+
+**Screenshot (proper usage)**
+![Log command usage](images/commands/log.png)
+- **Description:** Runs `log` to append a dated encounter entry to a contact's history.
 
 **Validation**
 - DATE must be a valid calendar date
@@ -299,6 +319,10 @@ Updates an existing encounter for a contact.
 - `editencounter 1 1 desc/Updated observation notes`
 - `editencounter 1 2 d/2026-03-27 t/20:15 l/Tanjong Pagar out/`
 
+**Screenshot (proper usage)**
+![Edit encounter command usage](images/commands/editencounter.png)
+- **Description:** Runs `editencounter` to modify an existing encounter for a specific contact.
+
 **Validation**
 - PERSON_INDEX must exist in the current contact list.
 - ENCOUNTER_INDEX must exist for that contact.
@@ -329,6 +353,10 @@ Adds a reminder entry to a contact.
 - `remind 2 d/2026-04-01 t/09:15 note/Follow up on statement`
 - `remind 1 d/2026-03-28 t/20:00 note/Meet informant pw/oldSecret` (when the contact already has a password)
 
+**Screenshot (proper usage)**
+![Remind command usage](images/commands/remind.png)
+- **Description:** Runs `remind` to add a reminder (date, time, note) to a contact.
+
 **Validation**
 - INDEX must exist in the current contact list.
 - DATE must be valid and use `YYYY-MM-DD`.
@@ -349,6 +377,10 @@ Displays the full profile of a contact and their encounter cards.
 
 **Format**
 `view INDEX [pw/PASSWORD]`
+
+**Screenshot (proper usage)**
+![View command usage](images/commands/view.png)
+- **Description:** Runs `view` to display the full profile and activity details of a contact.
 
 **Password behavior**
 - Without password: contact is viewable normally.
@@ -392,6 +424,10 @@ Filters the contact list by **name or alias keywords** (optional) and/or **tags*
 - `find t/suspect t/wanted` — matches contacts that have **any** of these tags.
 - `find alice t/suspect` — matches only if the contact satisfies **both**: name criteria **and** tag criteria (not either alone).
 
+**Screenshot (proper usage)**
+![Find command usage](images/commands/find.png)
+- **Description:** Runs `find` to filter contacts by name/alias keywords and/or tags.
+
 **Behavior**
 - **Name keywords** (text before any `t/`): case-insensitive; each keyword must match a **whole word** in the contact’s **name or aliases**. If you give several name keywords, a contact matches if **any** of those words appears in the name or aliases.
 - **Tags**: use `t/TAG` (alphanumeric tag names only). You can repeat `t/` for multiple tags; a contact matches if it has **any** of the listed tags.
@@ -422,6 +458,10 @@ Sorts the currently displayed contact list by a chosen criterion.
 - `sort status`
 - `sort recent`
 
+**Screenshot (proper usage)**
+![Sort command usage](images/commands/sort.png)
+- **Description:** Runs `sort` to reorder the displayed contact list using a selected criterion.
+
 **Behavior**
 - Sorting is applied to the displayed list view.
 - `sort location`: uses the location from each contact's chronologically latest encounter (maximum encounter date-time); contacts without encounters appear last.
@@ -445,6 +485,10 @@ Exports all encounters whose **location** matches the value you give, to a UTF-8
 
 **Example**
 `export l/Harbor District`
+
+**Screenshot (proper usage)**
+![Export command usage](images/commands/export.png)
+- **Description:** Runs `export` to generate a CSV file of encounters at a specified location.
 
 **Behavior**
 - Matching is **case-insensitive**. Leading and trailing spaces on your input and on each stored encounter location are ignored; the trimmed strings must be equal.
@@ -472,6 +516,10 @@ Password protection does not hide entries in this list; it only gates full-profi
 - After a `find` command, to return to the full contact list
 - To close a currently open contact profile without opening another
 
+**Screenshot (proper usage)**
+![List command usage](images/commands/list.png)
+- **Description:** Runs `list` to reset filters and show all contacts again.
+
 **Success output**
 `Listed all persons`
 
@@ -482,6 +530,10 @@ Password protection does not hide entries in this list; it only gates full-profi
 Clears all entries from CrimeWatch.
 
 Format: `clear`
+
+**Screenshot (proper usage)**
+![Clear command usage](images/commands/clear.png)
+- **Description:** Runs `clear` to remove all contacts and records from CrimeWatch.
 
 ### 13) Exit Application: `exit`
 
